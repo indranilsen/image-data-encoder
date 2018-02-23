@@ -5,3 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES main.cpp)
 add_executable(image_data_encoder ${SOURCE_FILES})
+
+find_library(ZLIB REQUIRED)
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIR})
+target_link_libraries(image_data_encoder ${PNG_LIBRARY})
