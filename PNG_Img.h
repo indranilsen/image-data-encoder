@@ -22,6 +22,7 @@ public:
     int load_image();
     void read_header_info();
     void read_image();
+    void flush_IDAT_to_file(const char *);
 };
 
 

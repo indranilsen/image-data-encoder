@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
         cout << "Load successful. Reading image ...\n";
         image.read_header_info();
         image.read_image();
+        image.flush_IDAT_to_file("../test.txt");
     } else {
         cout << "Load unsuccessful. Exiting with " << load_success << "...\n";
     }

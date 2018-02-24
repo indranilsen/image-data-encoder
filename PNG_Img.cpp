@@ -1,3 +1,6 @@
+#include <iostream>
+#include <fstream>
+#include <bitset>
 #include <png.h>
 #include "PNG_Img.h"
 
@@ -7,6 +10,11 @@ PNG_Img::PNG_Img(const char *fname) {
 
 PNG_Img::~PNG_Img() {
     f = NULL;
+
+    if (pixels != NULL) {
+        delete [] pixels;
+        pixels = NULL;
+    }
 }
 
 int PNG_Img::load_image() {
@@ -98,4 +106,22 @@ void PNG_Img::read_image() {
 
     png_destroy_read_struct(&png, &info, NULL);
     fclose(f);
+}
+
+void PNG_Img::flush_IDAT_to_file(const char *filename) {
+    std::ofstream file(filename);
+
+    if (file.is_open())
+    {
+        for (int i = 0; i <= (width * height * bytes_per_pixel); i += 3) {
+            if (i % (width * bytes_per_pixel) == 0) {
+                file << "\n\n";
+            }
+
+            file << i << ":(" << (int)pixels[i] << ", " << (int)pixels[i+1] << ", " << (int)pixels[i+2] << ") ";
+            std::cout << i << ":(" << std::bitset<8>(pixels[i]) << ", " << std::bitset<8>(pixels[i+1]) << ", " << std::bitset<8>(pixels[i+2]) << ") ";
+        }
+
+        file.close();
+    }
 }
