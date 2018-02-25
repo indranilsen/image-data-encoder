@@ -15,8 +15,6 @@ int main(int argc, char **argv) {
     }
 
     PNG_Img image(argv[1]);
-    Encoder en(&image);
-    en.set_message("hello");
 
     int load_success = image.load_image();
     if(load_success == 0) {
@@ -27,4 +25,14 @@ int main(int argc, char **argv) {
     } else {
         cout << "Load unsuccessful. Exiting with " << load_success << "...\n";
     }
+
+    Encoder en(&image);
+    en.set_message("hello");
+
+    PNG_Img new_img("../new_image.png");
+    new_img.create_image(
+            image.get_width(),
+            image.get_height(),
+            image.get_bytes_per_pixel(),
+            image.get_pixels());
 }

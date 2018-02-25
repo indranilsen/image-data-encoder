@@ -6,7 +6,7 @@
 class PNG_Img {
 private:
     const char *filename;
-    FILE *f;
+    FILE *fp;
 
     png_structp png;
     png_infop info;
@@ -22,10 +22,17 @@ public:
     ~PNG_Img();
 
     const char* get_filename();
+    long get_width();
+    long get_height();
+    long get_bytes_per_pixel();
+    unsigned char* get_pixels();
 
     int load_image();
     void read_header_info();
     void read_image();
+
+    int create_image(long, long, long, unsigned char *);
+
     void flush_IDAT_to_file(const char *);
 };
 
