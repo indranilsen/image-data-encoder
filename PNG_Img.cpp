@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <bitset>
-#include <png.h>
 #include "PNG_Img.h"
 
 PNG_Img::PNG_Img(const char *fname) {
@@ -15,6 +13,10 @@ PNG_Img::~PNG_Img() {
         delete [] pixels;
         pixels = NULL;
     }
+}
+
+const char* PNG_Img::get_filename() {
+    return filename;
 }
 
 int PNG_Img::load_image() {
@@ -119,7 +121,7 @@ void PNG_Img::flush_IDAT_to_file(const char *filename) {
             }
 
             file << i << ":(" << (int)pixels[i] << ", " << (int)pixels[i+1] << ", " << (int)pixels[i+2] << ") ";
-            std::cout << i << ":(" << std::bitset<8>(pixels[i]) << ", " << std::bitset<8>(pixels[i+1]) << ", " << std::bitset<8>(pixels[i+2]) << ") ";
+            //std::cout << i << ":(" << std::bitset<8>(pixels[i]) << ", " << std::bitset<8>(pixels[i+1]) << ", " << std::bitset<8>(pixels[i+2]) << ") ";
         }
 
         file.close();

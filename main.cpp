@@ -1,7 +1,7 @@
 #include <iostream>
-#include <png.h>
 
 #include "PNG_Img.h"
+#include "Encoder.h"
 
 using namespace std;
 
@@ -15,6 +15,9 @@ int main(int argc, char **argv) {
     }
 
     PNG_Img image(argv[1]);
+    Encoder en(&image);
+    en.set_message("hello");
+
     int load_success = image.load_image();
     if(load_success == 0) {
         cout << "Load successful. Reading image ...\n";
