@@ -17,6 +17,10 @@ public:
     void set_message(std::string);
     void set_message_from_file(const char* filename);
 
+    int encode_message();
+
+    int persist();
+
 };
 
 #endif //IMAGE_DATA_ENCODER_ENCODER_H

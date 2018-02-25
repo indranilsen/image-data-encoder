@@ -33,7 +33,7 @@ public:
 
     int create_image(long, long, long, unsigned char *);
 
-    void flush_IDAT_to_file(const char *);
+    void flush_IDAT_to_file(const char *, bool);
 };
 
 

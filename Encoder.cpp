@@ -21,7 +21,7 @@ std::string read_message_from_file(const char* filename) {
 
 Encoder::Encoder(PNG_Img *img) {
     orig_img = img;
-    new_img = new PNG_Img(img->get_filename());
+    new_img = new PNG_Img("../encoded.png");
 }
 
 Encoder::~Encoder() {
@@ -52,4 +52,40 @@ void Encoder::set_message_from_file(const char* filename) {
     for (int i = 0; i < str.length(); i++) {
         bytes[i] = std::bitset<8>(str.c_str()[i]);
     }
+}
+
+int Encoder::encode_message() {
+    unsigned char *medium = orig_img->get_pixels();
+
+    long num_pixels = orig_img->get_width() * orig_img->get_height();
+    if ((num_pixels * orig_img->get_bytes_per_pixel()) < (message.length()*8)) {
+        return -1;
+    }
+
+    int m_count = 0;
+    for (int i = 0; i < message.length(); i++) {
+        for (int j = 7; j >= 0; j--) {
+            if (bytes[i][j]) {
+                if ((medium[m_count] & 1) == 0) {
+                    medium[m_count] ^= 1;
+                }
+            } else {
+                if ((medium[m_count] & 1) == 1) {
+                    medium[m_count] ^= 1;
+                }
+            }
+
+            m_count++;
+        }
+    }
+
+    return 0;
+}
+
+int Encoder::persist() {
+    return new_img->create_image(
+            orig_img->get_width(),
+            orig_img->get_height(),
+            orig_img->get_bytes_per_pixel(),
+            orig_img->get_pixels());
 }

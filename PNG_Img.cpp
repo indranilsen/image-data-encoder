@@ -126,19 +126,23 @@ void PNG_Img::read_image() {
     fclose(fp);
 }
 
-void PNG_Img::flush_IDAT_to_file(const char *filename) {
+void PNG_Img::flush_IDAT_to_file(const char *filename, bool binary) {
     std::ofstream file(filename);
 
     if (file.is_open())
     {
             for (int i = 0; i <= (width * height * bytes_per_pixel); i += 3) {
-            if (i % (width * bytes_per_pixel) == 0) {
-                file << "\n\n";
-            }
+                if (i % (width * bytes_per_pixel) == 0) {
+                    file << "\n\n";
+                }
 
-            file << i << ":(" << (int)pixels[i] << ", " << (int)pixels[i+1] << ", " << (int)pixels[i+2] << ") ";
-            //std::cout << i << ":(" << std::bitset<8>(pixels[i]) << ", " << std::bitset<8>(pixels[i+1]) << ", " << std::bitset<8>(pixels[i+2]) << ") ";
-        }
+                if (binary) {
+                    file << i << ":(" << std::bitset<8>(pixels[i]) << ", " << std::bitset<8>(pixels[i+1]) << ", " << std::bitset<8>(pixels[i+2]) << ") ";
+                } else {
+                    file << i << ":(" << (int)pixels[i] << ", " << (int)pixels[i+1] << ", " << (int)pixels[i+2] << ") ";
+                }
+
+            }
 
         file.close();
     }
@@ -207,4 +211,6 @@ int PNG_Img::create_image(long w, long h, long bpp, unsigned char *pix) {
     png_write_end(png, NULL);
 
     fclose(fp);
+
+    return 0;
 }

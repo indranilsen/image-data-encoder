@@ -21,13 +21,15 @@ int main(int argc, char **argv) {
         cout << "Load successful. Reading image ...\n";
         image.read_header_info();
         image.read_image();
-        image.flush_IDAT_to_file("../test.txt");
+        image.flush_IDAT_to_file("../test.txt", false);
     } else {
         cout << "Load unsuccessful. Exiting with " << load_success << "...\n";
     }
 
     Encoder en(&image);
-    en.set_message("hello");
+    en.set_message_from_file("../read.txt");
+    en.encode_message();
+    en.persist();
 
     PNG_Img new_img("../new_image.png");
     new_img.create_image(
