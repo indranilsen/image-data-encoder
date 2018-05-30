@@ -2,6 +2,7 @@
 
 #include "PNG_Img.h"
 #include "Encoder.h"
+#include "Decoder.h"
 
 using namespace std;
 
@@ -27,9 +28,13 @@ int main(int argc, char **argv) {
     }
 
     Encoder en(&image);
-    en.set_message_from_file("../read.txt");
+    //en.set_message_from_file("../read.txt");
+    en.set_message("Hello World!");
     en.encode_message();
     en.persist();
+
+    Decoder dec("../img_encoded.png");
+    dec.decode_image();
 
     PNG_Img new_img("../new_image.png");
     new_img.create_image(

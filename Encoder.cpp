@@ -2,6 +2,7 @@
 #include <bitset>
 #include <iostream>
 #include <fstream>
+#include <cstdio>
 #include "Encoder.h"
 
 const int END_SYMBOL_SIZE = 4;
@@ -85,7 +86,7 @@ int Encoder::encode_message() {
     }
 
     int m_count = 0;
-    for (int i = 0; i < message.length(); i++) {
+    for (int i = 0; i < message.length() + END_SYMBOL_SIZE; i++) {
         for (int j = 7; j >= 0; j--) {
             if (bytes[i][j]) {
                 if ((medium[m_count] & 1) == 0) {
@@ -100,6 +101,8 @@ int Encoder::encode_message() {
             m_count++;
         }
     }
+
+    orig_img->flush_IDAT_to_file("../neil.txt", true);
 
     return 0;
 }
