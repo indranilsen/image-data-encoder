@@ -16,10 +16,17 @@ Decoder::~Decoder() {
 }
 
 void Decoder::decode_image() {
+    const int EOM_SYMBOL_SIZE = 4;
+    const char* EOM_SYMBOL = "@$$@";
+
     unsigned char *medium;
     unsigned char *pix = encoded_img->get_pixels();
 
     long num_pixels = encoded_img->get_width() * encoded_img->get_height();
+
+    bool checkEndSequence = false;
+    int endSequence = 0;
+    std::string msg = "";
 
     long current_pixel = 0;
     while (current_pixel <= num_pixels) {
@@ -28,6 +35,27 @@ void Decoder::decode_image() {
             byte.set(i, (pix[current_pixel] & 1));
             current_pixel++;
         }
-        std::cout<< char(byte.to_ulong());
+
+        char ch = char(byte.to_ulong());
+
+        if (ch == EOM_SYMBOL[0] && !checkEndSequence) {
+            checkEndSequence = true;
+            endSequence++;
+        } else if (checkEndSequence && endSequence >= 1) {
+            if (ch != EOM_SYMBOL[endSequence]) {
+                checkEndSequence = false;
+                endSequence = 0;
+            } else {
+                endSequence++;
+            }
+        }
+
+        msg += ch;
+
+        if (checkEndSequence && endSequence == EOM_SYMBOL_SIZE) {
+            break;
+        }
     }
+
+    decoded_message = msg.substr(0, msg.length() - EOM_SYMBOL_SIZE).c_str();
 }

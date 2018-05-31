@@ -5,8 +5,8 @@
 #include <cstdio>
 #include "Encoder.h"
 
-const int END_SYMBOL_SIZE = 4;
-const char* END_SYMBOL = "@$$@";
+const int EOM_SYMBOL_SIZE = 4;
+const char* EOM_SYMBOL = "@$$@";
 
 std::string read_message_from_file(const char* filename) {
     std::string message, line;
@@ -33,8 +33,8 @@ const char* append_suffix(const char* str, const char* suffix) {
 }
 
 void append_end_symbol(std::bitset<8>* bytes, long len) {
-    for (int i = 0; i < END_SYMBOL_SIZE; i++) {
-        bytes[len + i] = std::bitset<8>(END_SYMBOL[i]);
+    for (int i = 0; i < EOM_SYMBOL_SIZE; i++) {
+        bytes[len + i] = std::bitset<8>(EOM_SYMBOL[i]);
     }
 }
 
@@ -55,7 +55,7 @@ Encoder::~Encoder() {
 
 void Encoder::set_message(std::string str) {
     message = str;
-    bytes = new std::bitset<8> [str.length() + END_SYMBOL_SIZE];
+    bytes = new std::bitset<8> [str.length() + EOM_SYMBOL_SIZE];
 
     for (int i = 0; i < str.length(); i++) {
         bytes[i] = std::bitset<8>(str.c_str()[i]);
@@ -68,7 +68,7 @@ void Encoder::set_message_from_file(const char* filename) {
     std::string str = read_message_from_file(filename);
 
     message = str;
-    bytes = new std::bitset<8> [str.length() + END_SYMBOL_SIZE];
+    bytes = new std::bitset<8> [str.length() + EOM_SYMBOL_SIZE];
 
     for (int i = 0; i < str.length(); i++) {
         bytes[i] = std::bitset<8>(str.c_str()[i]);
@@ -86,7 +86,7 @@ int Encoder::encode_message() {
     }
 
     int m_count = 0;
-    for (int i = 0; i < message.length() + END_SYMBOL_SIZE; i++) {
+    for (int i = 0; i < message.length() + EOM_SYMBOL_SIZE; i++) {
         for (int j = 7; j >= 0; j--) {
             if (bytes[i][j]) {
                 if ((medium[m_count] & 1) == 0) {
@@ -101,8 +101,6 @@ int Encoder::encode_message() {
             m_count++;
         }
     }
-
-    orig_img->flush_IDAT_to_file("../neil.txt", true);
 
     return 0;
 }
