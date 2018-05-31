@@ -1,5 +1,6 @@
 #include <bitset>
 #include <iostream>
+#include <fstream>
 #include "Decoder.h"
 
 Decoder::Decoder(const char *filename) {
@@ -56,6 +57,22 @@ void Decoder::decode_image() {
             break;
         }
     }
+    char* str = new char[msg.length() - EOM_SYMBOL_SIZE];
+    strcpy(str, msg.substr(0, msg.length() - EOM_SYMBOL_SIZE).c_str());
+    decoded_message = str;
+}
 
-    decoded_message = msg.substr(0, msg.length() - EOM_SYMBOL_SIZE).c_str();
+void Decoder::output_decoded_msg_to_sdtout() {
+    std::cout << decoded_message;
+}
+
+void Decoder::output_decoded_msg_to_file(const char *filename) {
+    std::ofstream file(filename);
+
+    if (file.is_open())
+    {
+        file << decoded_message;
+
+        file.close();
+    }
 }

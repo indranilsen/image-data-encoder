@@ -13,6 +13,8 @@ public:
     ~Decoder();
 
     void decode_image();
+    void output_decoded_msg_to_sdtout();
+    void output_decoded_msg_to_file(const char*);
 };
 
 
