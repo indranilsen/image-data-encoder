@@ -3,7 +3,7 @@ project(image_data_encoder)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp PNG_Img.cpp PNG_Img.h Encoder.cpp Encoder.h Decoder.cpp Decoder.h)
+set(SOURCE_FILES main.cpp PNG_Img.cpp PNG_Img.h Encoder.cpp Encoder.h Decoder.cpp Decoder.h ArgParser.cpp ArgParser.h)
 add_executable(image_data_encoder ${SOURCE_FILES})
 
 find_library(ZLIB REQUIRED)

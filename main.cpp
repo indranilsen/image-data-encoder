@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "ArgParser.h"
 #include "PNG_Img.h"
 #include "Encoder.h"
 #include "Decoder.h"
@@ -7,15 +8,14 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
+    ArgParser argument_parser(argc, argv);
+    int parse_valid = argument_parser.parse();
+
+    if (parse_valid == -1) {
         return -1;
     }
 
-    if (strcmp(argv[1], "") == 0) {
-        return -1;
-    }
-
-    PNG_Img image(argv[1]);
+    PNG_Img image(argument_parser.get_arg("image"));
 
     int load_success = image.load_image();
     if(load_success == 0) {
