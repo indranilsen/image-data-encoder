@@ -33,12 +33,12 @@ int main(int argc, char **argv) {
     en.encode_message();
     en.persist();
 
-    Decoder dec("../img_encoded.png");
+    Decoder dec("../test/img_encoded.png");
     dec.decode_image();
     dec.output_decoded_msg_to_sdtout();
     dec.output_decoded_msg_to_file("../msg.txt");
 
-    PNG_Img new_img("../new_image.png");
+    PNG_Img new_img("../test/new_image.png");
     new_img.create_image(
             image.get_width(),
             image.get_height(),
